@@ -11,10 +11,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
-const io = new Server(server);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 app.use(bodyParser.json());
-
 app.use('/smoke', dataRoutes(io));
 
 app.disable('x-powered-by');
@@ -29,6 +34,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
