@@ -1,12 +1,8 @@
-import express from 'express';
-import { saveData } from '../controllers/save.data.controller';
-import { Server } from 'socket.io';
-import { verifyToken } from '../middleware/middleware';
+import * as express from 'express';
+import { dataController } from '../controllers/data.controller';
 
 const router = express.Router();
 
-export default (io: Server) => {
-    router.post('/data', verifyToken, saveData(io));
-    return router;
-  };
+router.get('/data', dataController.handleRequest);
 
+export default router;
